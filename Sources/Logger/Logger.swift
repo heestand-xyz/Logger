@@ -33,7 +33,8 @@ public struct Logger {
     
     public static func log(level: Level = .info, message: String? = nil, filePath: String = #file, funcName: String = #function) {
         
-        let fileName: String = String(filePath.split(separator: "/").last?.split(separator: ".").first ?? "")
+//        let fileName: String = String(filePath.split(separator: "/").last?.split(separator: ".").first ?? "")
+        let fileName: String = filePath.components(separatedBy: "Sources/").last ?? ""
         
         var log: String = "\(prefix) \(level.label) \(fileName) \(funcName)"
         
