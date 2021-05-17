@@ -34,7 +34,7 @@ public struct Logger {
     struct Log {
         let level: Level
         let message: String?
-        let arguments: [String: String]
+        let arguments: [String: Any?]
         let filePath: String
         let funcName: String
     }
@@ -54,7 +54,7 @@ public struct Logger {
         }
     }
     
-    public static func preLog(level: Level = .info, message: String? = nil, arguments: [String: String] = [:], filePath: String = #file, funcName: String = #function) -> PreLog {
+    public static func preLog(level: Level = .info, message: String? = nil, arguments: [String: Any?] = [:], filePath: String = #file, funcName: String = #function) -> PreLog {
         PreLog(log: Log(level: level, message: message, arguments: arguments, filePath: filePath, funcName: funcName))
     }
     
@@ -63,7 +63,7 @@ public struct Logger {
         log(preLog.log)
     }
     
-    public static func log(level: Level = .info, message: String? = nil, arguments: [String: String] = [:], filePath: String = #file, funcName: String = #function) {
+    public static func log(level: Level = .info, message: String? = nil, arguments: [String: Any?] = [:], filePath: String = #file, funcName: String = #function) {
         log(Log(level: level, message: message, arguments: arguments, filePath: filePath, funcName: funcName))
     }
     private static func log(_ log: Log, timeout: Bool = false) {
@@ -74,20 +74,24 @@ public struct Logger {
         var text: String = "\(prefix) \(log.level.label) \(fileName) > \(log.funcName)"
         
         if let message: String = log.message {
-            text += " >> \"\(message)\""
+            text += " <> \"\(message)\""
         }
         if !log.arguments.isEmpty {
-            text += "[ "
+            text += " <> [ "
             for (i, argument) in log.arguments.enumerated() {
                 if i > 0 {
                     text += ", "
                 }
-                text += "\(argument.key): \(argument.value)"
+                var arg: String? = nil
+                if let value: Any = argument.value {
+                    arg = String(describing: value)
+                }
+                text += "\(argument.key): \(arg ?? "nil")"
             }
             text += " ]"
         }
         if let error: Error = log.level.error {
-            text += " >>> Error: \(String(describing: error))"
+            text += " <<>> Error: \(String(describing: error))"
         }
         if timeout {
             text += " [TIMEOUT]"
