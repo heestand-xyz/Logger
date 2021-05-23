@@ -44,7 +44,8 @@ public struct Logger {
         var cancelled: Bool = false
         init(log: Log) {
             self.log = log
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
                 guard !self.cancelled else { return }
                 Logger.log(log, timeout: true)
             }
