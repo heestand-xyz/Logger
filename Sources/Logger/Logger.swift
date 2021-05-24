@@ -72,13 +72,13 @@ public struct Logger {
 //        let fileName: String = String(filePath.split(separator: "/").last?.split(separator: ".").first ?? "")
         let fileName: String = log.filePath.components(separatedBy: "Sources/").last ?? ""
         
-        var text: String = "\(prefix) \(log.level.label) \(fileName) > \(log.funcName)"
+        var text: String = "\(prefix) \(log.level.label) \(fileName) > \(log.funcName) >>>"
         
         if let message: String = log.message {
-            text += " <> \"\(message)\""
+            text += " \"\(message)\""
         }
         if !log.arguments.isEmpty {
-            text += " <> [ "
+            text += " [ "
             for (i, argument) in log.arguments.enumerated() {
                 if i > 0 {
                     text += ", "
@@ -92,7 +92,7 @@ public struct Logger {
             text += " ]"
         }
         if let error: Error = log.level.error {
-            text += " <<>> Error: \(String(describing: error))"
+            text += " <<!>> Error: \(String(describing: error))"
         }
         if timeout {
             text += " [TIMEOUT]"
