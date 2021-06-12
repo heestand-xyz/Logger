@@ -55,7 +55,7 @@ public struct Logger {
         }
     }
     
-    public static func preLog(level: Level = .info, message: String? = nil, arguments: [String: Any?] = [:], filePath: String = #file, funcName: String = #function) -> PreLog {
+    public static func preLog(_ level: Level = .info, message: String? = nil, arguments: [String: Any?] = [:], filePath: String = #file, funcName: String = #function) -> PreLog {
         PreLog(log: Log(level: level, message: message, arguments: arguments, filePath: filePath, funcName: funcName))
     }
     
@@ -64,7 +64,7 @@ public struct Logger {
         log(preLog.log)
     }
     
-    public static func log(level: Level = .info, message: String? = nil, arguments: [String: Any?] = [:], filePath: String = #file, funcName: String = #function) {
+    public static func log(_ level: Level = .info, message: String? = nil, arguments: [String: Any?] = [:], filePath: String = #file, funcName: String = #function) {
         log(Log(level: level, message: message, arguments: arguments, filePath: filePath, funcName: funcName))
     }
     private static func log(_ log: Log, timeout: Bool = false) {
