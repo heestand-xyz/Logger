@@ -2,8 +2,6 @@ import Foundation
 
 public struct Logger {
     
-    public static var prefix: String = "Log"
-    
     public enum Level {
         
         case info
@@ -69,10 +67,14 @@ public struct Logger {
     }
     private static func log(_ log: Log, timeout: Bool = false) {
 
-//        let fileName: String = String(filePath.split(separator: "/").last?.split(separator: ".").first ?? "")
-        let fileName: String = log.filePath.components(separatedBy: "Sources/").last ?? ""
+        var fileName: String = log.filePath.components(separatedBy: "code/").last ?? ""
+        if fileName.contains("App/Sources/") {
+            fileName = "App " + (fileName.components(separatedBy: "App/Sources/").last ?? "")
+        } else if fileName.contains("Sources/") {
+            fileName = "Package " + (fileName.components(separatedBy: "Sources/").last ?? "")
+        }
         
-        var text: String = "\(prefix) \(log.level.label) \(fileName) > \(log.funcName) >>>"
+        var text: String = "\(log.level.label) \(fileName) > \(log.funcName) >>>"
         
         if let message: String = log.message {
             text += " \"\(message)\""
