@@ -94,7 +94,7 @@ public struct Logger {
             text += " ]"
         }
         if let error: Error = log.level.error {
-            text += " <<!>> Error: \(String(describing: error))"
+            text += " <<!>> Error: \(error.localizedDescription) <!> \(String(describing: error))"
         }
         if timeout {
             text += " [TIMEOUT]"
