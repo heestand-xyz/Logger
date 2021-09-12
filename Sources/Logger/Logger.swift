@@ -66,7 +66,9 @@ public struct Logger {
         log(Log(level: level, message: message, arguments: arguments, filePath: filePath, funcName: funcName))
     }
     private static func log(_ log: Log, timeout: Bool = false) {
-
+        
+        #if DEBUG
+        
         var fileName: String = log.filePath.components(separatedBy: "code/").last ?? ""
         if fileName.contains("App/Sources/") {
             fileName = "App " + (fileName.components(separatedBy: "App/Sources/").last ?? "")
@@ -101,5 +103,7 @@ public struct Logger {
         }
         
         print(text)
+        
+        #endif
     }
 }
