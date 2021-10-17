@@ -2,6 +2,14 @@ import Foundation
 
 public struct Logger {
     
+    public enum Frequency: Int {
+        case regular
+        case verbose
+        case loop
+    }
+    
+    public static var frequency: Frequency = .regular
+    
     public enum Level {
         
         case info
@@ -31,6 +39,7 @@ public struct Logger {
     
     struct Log {
         let level: Level
+        let frequency: Frequency
         let message: String?
         let arguments: [String: Any?]
         let filePath: String
@@ -53,8 +62,8 @@ public struct Logger {
         }
     }
     
-    public static func preLog(_ level: Level = .info, message: String? = nil, arguments: [String: Any?] = [:], filePath: String = #file, funcName: String = #function) -> PreLog {
-        PreLog(log: Log(level: level, message: message, arguments: arguments, filePath: filePath, funcName: funcName))
+    public static func preLog(_ level: Level = .info, message: String? = nil, arguments: [String: Any?] = [:], frequency: Frequency = .regular, filePath: String = #file, funcName: String = #function) -> PreLog {
+        PreLog(log: Log(level: level, frequency: frequency, message: message, arguments: arguments, filePath: filePath, funcName: funcName))
     }
     
     public static func postLog(_ preLog: PreLog) {
@@ -62,12 +71,14 @@ public struct Logger {
         log(preLog.log)
     }
     
-    public static func log(_ level: Level = .info, message: String? = nil, arguments: [String: Any?] = [:], filePath: String = #file, funcName: String = #function) {
-        log(Log(level: level, message: message, arguments: arguments, filePath: filePath, funcName: funcName))
+    public static func log(_ level: Level = .info, message: String? = nil, arguments: [String: Any?] = [:], frequency: Frequency = .regular, filePath: String = #file, funcName: String = #function) {
+        log(Log(level: level, frequency: frequency, message: message, arguments: arguments, filePath: filePath, funcName: funcName))
     }
     private static func log(_ log: Log, timeout: Bool = false) {
         
         #if DEBUG
+        
+        guard log.frequency.rawValue <= Self.frequency.rawValue else { return }
         
         var fileName: String = log.filePath.components(separatedBy: "code/").last ?? ""
         if fileName.contains("App/Sources/") {
