@@ -9,9 +9,14 @@ let package = Package(
             name: "Logger",
             targets: ["Logger"]),
     ],
+    dependencies: [
+        .package(url: "https://github.com/apple/swift-collections", from: "1.0.1"),
+    ],
     targets: [
         .target(
             name: "Logger",
-            dependencies: [])
+            dependencies: [
+                .product(name: "Collections", package: "swift-collections"),
+            ])
     ]
 )
