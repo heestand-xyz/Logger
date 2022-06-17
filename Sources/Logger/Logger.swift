@@ -101,7 +101,11 @@ public struct Logger {
                 }
                 var arg: String? = nil
                 if let value: Any = argument.value {
-                    arg = String(describing: value)
+                    if let string = value as? String {
+                        arg = "\"\(string)\""
+                    } else {
+                        arg = String(describing: value)
+                    }
                 }
                 text += "\(argument.key): \(arg ?? "nil")"
             }
