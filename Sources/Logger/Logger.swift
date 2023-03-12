@@ -81,12 +81,13 @@ public struct Logger {
         
         guard log.frequency.rawValue <= Self.frequency.rawValue else { return }
         
-        var fileName: String = log.filePath.components(separatedBy: "code/").last ?? ""
-        if fileName.contains("App/Sources/") {
-            fileName = "App " + (fileName.components(separatedBy: "App/Sources/").last ?? "")
-        } else if fileName.contains("Sources/") {
-            fileName = "Package " + (fileName.components(separatedBy: "Sources/").last ?? "")
-        }
+//        var fileName: String = log.filePath.components(separatedBy: "code/").last ?? ""
+//        if fileName.contains("App/Sources/") {
+//            fileName = "App " + (fileName.components(separatedBy: "App/Sources/").last ?? "")
+//        } else if fileName.contains("Sources/") {
+//            fileName = "Package " + (fileName.components(separatedBy: "Sources/").last ?? "")
+//        }
+        let fileName: String = String(log.filePath.split(separator: "/").last ?? "")
         
         var text: String = "\(log.level.label) \(fileName) > \(log.funcName) >>>"
         
