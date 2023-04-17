@@ -63,23 +63,28 @@ public struct Logger {
         }
     }
     
+    @available(*, deprecated)
     public static func preLog(_ level: Level = .info, message: String? = nil, arguments: OrderedDictionary<String, Any?> = [:], frequency: Frequency = .regular, filePath: String = #file, funcName: String = #function) -> PreLog {
         PreLog(log: Log(level: level, frequency: frequency, message: message, arguments: arguments, filePath: filePath, funcName: funcName))
     }
     
+    @available(*, deprecated)
     public static func postLog(_ preLog: PreLog) {
         preLog.cancel()
         log(preLog.log)
     }
     
-    public static func log(_ level: Level = .info, message: String? = nil, arguments: OrderedDictionary<String, Any?> = [:], frequency: Frequency = .regular, filePath: String = #file, funcName: String = #function) {
+    @discardableResult
+    public static func log(_ level: Level = .info, message: String? = nil, arguments: OrderedDictionary<String, Any?> = [:], frequency: Frequency = .regular, filePath: String = #file, funcName: String = #function) -> String? {
         log(Log(level: level, frequency: frequency, message: message, arguments: arguments, filePath: filePath, funcName: funcName))
     }
-    private static func log(_ log: Log, timeout: Bool = false) {
+    
+    @discardableResult
+    private static func log(_ log: Log, timeout: Bool = false) -> String? {
         
         #if DEBUG
         
-        guard log.frequency.rawValue <= Self.frequency.rawValue else { return }
+        guard log.frequency.rawValue <= Self.frequency.rawValue else { return nil }
         
 //        var fileName: String = log.filePath.components(separatedBy: "code/").last ?? ""
 //        if fileName.contains("App/Sources/") {
@@ -120,6 +125,12 @@ public struct Logger {
         }
         
         print(text)
+        
+        return text
+        
+        #else
+        
+        return  nil
         
         #endif
     }
