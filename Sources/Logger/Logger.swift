@@ -1,3 +1,4 @@
+//import os.log
 import Foundation
 import Collections
 
@@ -123,6 +124,17 @@ public struct Logger {
         if timeout {
             text += " [TIMEOUT]"
         }
+        
+//        let logger = os.Logger(subsystem: "file: \(fileName)", category: "func: \(log.funcName)")
+//        
+//        switch log.level {
+//        case .info:
+//            logger.info("\(text, privacy: .public)")
+//        case .warning:
+//            logger.warning("\(text, privacy: .public)")
+//        case .error:
+//            logger.fault("\(text, privacy: .public)")
+//        }
         
         print(text)
         
